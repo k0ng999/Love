@@ -1,0 +1,65 @@
+$size: 13vw;
+
+.heart {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: $pink;
+  width: $size;
+  height: $size;
+  transform: rotate(-45deg);
+  animation: beat 2s infinite;
+
+  &:after,
+  &:before {
+    content: "";
+    background-color: $pink;
+    border-radius: 50%;
+    position: absolute;
+    width: $size;
+    height: $size;
+    animation: beat-color 2s infinite;
+  }
+
+  &:after {
+    top: 0;
+    left: calc(#{$size} / 2);
+  }
+
+  &:before {
+    top: calc(-1 * #{$size} / 2);
+    left: 0;
+  }
+}
+
+// Анимация масштаба и цвета самой "базы" сердца
+@keyframes beat {
+  0% {
+    transform: scale(1) rotate(-45deg);
+    background-color: $pink;
+  }
+  50% {
+    transform: scale(0.6) rotate(-45deg);
+    background-color: $pink-hover;
+  }
+  100% {
+    transform: scale(1) rotate(-45deg);
+    background-color: $pink;
+  }
+}
+
+// Анимация цвета для before/after
+@keyframes beat-color {
+  0% {
+    background-color: $pink;
+  }
+  50% {
+    background-color: $pink-hover;
+  }
+  100% {
+    background-color: $pink;
+  }
+}

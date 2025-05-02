@@ -1,7 +1,7 @@
 {
-  "name": "loveproject",
+  "name": "love",
   "private": true,
-  "homepage": "https://k0ng999.github.io/loveproject/",
+  "homepage": "https://k0ng999.github.io/Love/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -13,12 +13,15 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
     "gh-pages": "^6.3.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "sass": "^1.87.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
+    "@types/node": "^22.15.3",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react-swc": "^3.8.0",

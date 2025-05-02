@@ -1,0 +1,188 @@
+@use "sass:math";
+
+$strokeColor: #faeafa;
+$heartColor: $pink;
+$size: 40vw;
+$totalAnim: 7s;
+$delay: 0.1s;
+$squareLen: 240;
+$circleLen: 188.522;
+$heartLen: 308.522;
+$svgSize: 90px;
+$circleW: 60px;
+
+@keyframes fadeIn {
+  to {
+    background: var(--background);
+    overflow: auto;
+  }
+}
+
+body {
+  overflow: hidden;
+  animation: unlockScroll 0s 7s forwards; /* 0s - нет анимации, только задержка */
+  background: #000000;
+  animation: fadeIn 1s $totalAnim ease-in-out forwards;
+}
+
+.heartLoader {
+  position: absolute;
+  display: block;
+  left: 50%;
+  top: 50%;
+  margin-top: math.div($size, -2);
+  width: $size;
+  height: $size;
+  overflow: visible;
+}
+
+.heartLoader__group {
+  transform-origin: 0 $svgSize;
+  animation: group-anim $totalAnim $delay forwards;
+}
+
+.heartLoader__square {
+  stroke: $strokeColor;
+  stroke-dasharray: $squareLen, $squareLen;
+  stroke-dashoffset: $squareLen;
+  animation: square-anim $totalAnim $delay forwards;
+}
+
+.heartLoader__circle {
+  stroke: $strokeColor;
+  stroke-dasharray: $circleLen, $circleLen;
+  stroke-dashoffset: $circleLen;
+  transform-origin: $circleW math.div($circleW, 2);
+}
+
+.mLeft {
+  animation: left-circle-anim $totalAnim $delay forwards;
+}
+
+.mRight {
+  animation: right-circle-anim $totalAnim $delay forwards;
+}
+
+.heartLoader__heartPath {
+  stroke: $heartColor;
+  fill: transparent;
+  stroke-dasharray: $heartLen, $heartLen;
+  stroke-dashoffset: $heartLen;
+  animation: heart-anim $totalAnim $delay forwards;
+}
+
+@keyframes square-anim {
+  12% {
+    stroke-dashoffset: 0;
+  }
+  43% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  85% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes left-circle-anim {
+  12% {
+    stroke-dashoffset: $circleLen;
+  }
+  31% {
+    stroke-dashoffset: 0;
+    transform: translateY(0);
+  }
+  41% {
+    stroke-dashoffset: 0;
+    transform: translateY(math.div($circleW, -2));
+  }
+  43% {
+    stroke-dashoffset: 0;
+    transform: translateY(math.div($circleW, -2));
+    opacity: 1;
+  }
+  85% {
+    stroke-dashoffset: 0;
+    transform: translateY(math.div($circleW, -2));
+    opacity: 0;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    transform: translateY(math.div($circleW, -2));
+    opacity: 0;
+  }
+}
+
+@keyframes right-circle-anim {
+  12% {
+    stroke-dashoffset: $circleLen;
+  }
+  31% {
+    stroke-dashoffset: 0;
+    transform: translateX(0);
+  }
+  41% {
+    stroke-dashoffset: 0;
+    transform: translateX(math.div($circleW, 2));
+  }
+  43% {
+    stroke-dashoffset: 0;
+    transform: translateX(math.div($circleW, 2));
+    opacity: 1;
+  }
+  85% {
+    stroke-dashoffset: 0;
+    transform: translateX(math.div($circleW, 2));
+    opacity: 0;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    transform: translateX(math.div($circleW, 2));
+    opacity: 0;
+  }
+}
+
+@keyframes group-anim {
+  43% {
+    transform: rotate(0);
+  }
+  54% {
+    transform: rotate(-45deg);
+  }
+  90% {
+    transform: rotate(-45deg);
+    opacity: 1;
+  }
+  97% {
+    transform: rotate(-45deg);
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(-45deg);
+    opacity: 0;
+  }
+}
+
+@keyframes heart-anim {
+  55% {
+    stroke-dashoffset: $heartLen;
+    fill: transparent;
+  }
+  70% {
+    stroke-dashoffset: 0;
+    fill: transparent;
+  }
+  87% {
+    stroke-dashoffset: 0;
+    fill: $heartColor;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    fill: $heartColor;
+  }
+}

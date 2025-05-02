@@ -1,0 +1,61 @@
+@use "sass:math";
+
+@function r($pixel) {
+  @if math.is-unitless($pixel) {
+    @return math.div($pixel, 16) + rem;
+  } @else {
+    @error 'Не используйте единицы измерения при работе с функцией rem()! Передавайте аргументом только числа.';
+  }
+}
+
+@function lh($font-size) {
+  @if not math.is-unitless($font-size) {
+    @error "Передавайте число без единиц!";
+  }
+  // Для шрифтов меньше 16px – чуть больший межстрочный интервал,
+  // для 16–24px – стандартный, для больших шрифтов – более компактный.
+  @if $font-size < 16 {
+    @return 1.5;
+  } @else if $font-size <= 24 {
+    @return 1.4;
+  } @else {
+    @return 1.2;
+  }
+}
+
+@function ls($font-size) {
+  @if not math.is-unitless($font-size) {
+    @error "Передавайте число без единиц!";
+  }
+  // Для маленьких шрифтов – положительный kerning, для средних – по умолчанию, для больших – слегка отрицательный.
+  @if $font-size < 16 {
+    @return 0.05em;
+  } @else if $font-size <= 24 {
+    @return 0em;
+  } @else {
+    @return -0.02em;
+  }
+}
+
+@function p($num) {
+  @return $num * 1px;
+}
+
+@mixin hoverS {
+  @media (hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+
+  @media (hover: none) {
+    &:active {
+      @content;
+    }
+  }
+}
+// @include hover-support {
+//   background-color: var(--color-hover-menu);
+//   color: white;
+//   border-radius: 5px;
+// }
