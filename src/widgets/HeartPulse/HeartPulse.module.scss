@@ -1,6 +1,37 @@
-$size: 13vw;
+$size: 25vw;
+
+body {
+  overflow: hidden;
+}
+.header_block {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--background);
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 4vw;
+    background-color: $light;
+    transition: width $transform-s-sm;
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4vw;
+    height: 100%;
+    background-color: $light;
+    transition: height $transform-s-sm;
+  }
+}
 
 .heart {
+  z-index: 9999;
   position: absolute;
   margin: auto;
   top: 0;
@@ -10,8 +41,9 @@ $size: 13vw;
   background-color: $pink;
   width: $size;
   height: $size;
-  transform: rotate(-45deg);
+  transform: rotate(-45deg) scale(1);
   animation: beat 2s infinite;
+  transition: scale $transform-s-sm ease-out, opacity $transform-s-sm ease-out;
 
   &:after,
   &:before {
@@ -61,5 +93,28 @@ $size: 13vw;
   }
   100% {
     background-color: $pink;
+  }
+}
+
+.header_block_close {
+  cursor: default;
+  &::after {
+    width: 0%;
+  }
+  &::before {
+    height: 0%;
+  }
+}
+
+.heart_close {
+  animation-play-state: paused !important;
+  rotate: 0deg;
+  scale: 3;
+  opacity: 0;
+
+  /* для псевдо‑элементов тоже */
+  &::before,
+  &::after {
+    animation-play-state: paused !important;
   }
 }

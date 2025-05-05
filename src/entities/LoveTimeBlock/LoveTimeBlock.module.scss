@@ -1,0 +1,30 @@
+.header_block {
+  margin: r($spacing-md);
+  text-align: center;
+
+  & .head_text {
+    color: $pink-hover;
+    font-size: r($font-size-xl);
+    font-weight: 800;
+  }
+
+  & .time_block {
+    display: flex;
+    flex-direction: column; // располагаем дни вертикально
+    margin-top: r($spacing-xl);
+    gap: r($spacing-xxl);
+    & div {
+      font-size: r($spacing-xl);
+      font-weight: 800;
+      width: 100%; // чтобы можно было выровнять содержимое внутри
+
+      &:nth-child(odd) {
+        text-align: left; // выравнивание влево
+      }
+
+      &:nth-child(even) {
+        text-align: right; // выравнивание вправо
+      }
+    }
+  }
+}

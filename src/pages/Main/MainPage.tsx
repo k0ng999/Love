@@ -3,6 +3,8 @@ import FirstLoader from "../../widgets/FirstLoader/FirstLoader";
 import HeartPulse from "../../widgets/HeartPulse/HeartPulse";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
+import LoveTimeBlock from "../../entities/LoveTimeBlock/LoveTimeBlock";
+import LoveButton from "../../widgets/LoveButton/LoveButton";
 
 function MainPage() {
   const [firstClick, setFirstClick] = useState(false);
@@ -13,7 +15,7 @@ function MainPage() {
   useEffect(() => {
     const loaderTimeout = setTimeout(() => {
       setShowLoader(false);
-    }, 7000);
+    }, 8000);
 
     return () => clearTimeout(loaderTimeout);
   }, []);
@@ -23,7 +25,8 @@ function MainPage() {
     if (firstClick) {
       const timeout = setTimeout(() => {
         setShowHeart(false);
-      }, 1000);
+        document.body.style.overflow = "auto";
+      }, 1200);
 
       return () => clearTimeout(timeout);
     }
@@ -31,7 +34,11 @@ function MainPage() {
 
   return (
     <>
-      {showLoader && <FirstLoader />}
+      {showLoader && (
+        <div className={s.loader}>
+          <FirstLoader />
+        </div>
+      )}
       <div className={s.fadeIn}>
         {showHeart && (
           <div
@@ -41,6 +48,8 @@ function MainPage() {
             <HeartPulse />
           </div>
         )}
+        <LoveTimeBlock></LoveTimeBlock>
+        <LoveButton></LoveButton>
       </div>
     </>
   );

@@ -1,5 +1,12 @@
 @use "variables/themes";
 
+@font-face {
+  font-family: "InterVariable";
+  src: url("/InterVariable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
 body {
   color-scheme: light;
   background-color: var(--background);
@@ -8,4 +15,6 @@ body {
   padding: 0;
   overflow-x: hidden;
   font-size: r(16);
+  font-family: "InterVariable", -apple-system, system-ui, "Segoe UI",
+    "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
 }

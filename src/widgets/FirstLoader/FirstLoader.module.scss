@@ -20,8 +20,6 @@ $circleW: 60px;
 
 body {
   overflow: hidden;
-  animation: unlockScroll 0s 7s forwards; /* 0s - нет анимации, только задержка */
-  background: #000000;
   animation: fadeIn 1s $totalAnim ease-in-out forwards;
 }
 

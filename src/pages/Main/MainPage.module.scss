@@ -7,19 +7,35 @@
 @keyframes fadeOut {
   to {
     opacity: 0;
-    visibility: hidden;
   }
 }
 
+@keyframes fadeOutLoader {
+  to {
+    opacity: 0;
+  }
+}
+.loader {
+  background-color: #000;
+  position: absolute;
+  z-index: 9999;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  animation: fadeOutLoader 1s 7s forwards;
+}
 .fadeIn {
-  opacity: 0;
-  visibility: hidden;
+  opacity: 1;
+  visibility: visible;
   animation: fadeIn 1s 8s forwards;
 
   & .heartPulse {
+    position: absolute;
     cursor: pointer;
+    z-index: 9999;
+    top: 0;
   }
   & .heartPulseClose {
-    animation: fadeOut 0.5s forwards;
+    animation: fadeOut 1s 0.2s forwards;
   }
 }

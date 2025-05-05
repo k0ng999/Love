@@ -1,0 +1,91 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: 100%;
+  user-select: none;
+  -webkit-user-select: none; // для Safari
+  -webkit-tap-highlight-color: transparent; // убирает синий фон при нажатии на iOS
+  -webkit-touch-callout: none; // блокирует контекстное меню iOS
+}
+
+.header_block {
+  cursor: pointer;
+  width: 100%;
+  max-width: r(500);
+  margin-inline: r($spacing-md);
+  margin-top: r($spacing-xxxl);
+  background-color: $pink;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: r($border-radius-md);
+  border: 8px solid $light;
+  position: relative;
+  overflow: hidden;
+  transition: transform $transform-s-sm ease-in-out,
+    box-shadow $transform-s-sm ease-in-out;
+  transform: scale(1);
+  box-shadow: 0 r(8) r(20) rgba(0, 0, 0, 0.3); // обычное состояние
+  touch-action: manipulation;
+
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+
+  &.pressed {
+    transform: scale(0.9);
+    box-shadow: 0 r(4) r(10) rgba(0, 0, 0, 0.1); // уменьшенная тень при нажатии
+  }
+
+  & .heart {
+    z-index: 1;
+    & svg {
+      padding-top: r(25);
+      padding-bottom: r(25);
+      width: r(100);
+      height: r(100);
+    }
+  }
+}
+
+.diagonals {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: $light; // будет использоваться как цвет линий
+  pointer-events: none;
+  z-index: 0; // позади сердечка
+}
+
+.bubbles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0; // позади сердечка, но над фоном
+}
+
+.bubble {
+  position: absolute;
+  background: rgba($light, 0.7);
+  border-radius: 50%;
+  opacity: 0;
+  animation: bubble-up 0.8s ease-out forwards;
+}
+
+@keyframes bubble-up {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-120px) scale(0.5);
+    opacity: 0;
+  }
+}
