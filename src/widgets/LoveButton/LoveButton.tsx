@@ -1,95 +1,119 @@
 import { useState, useEffect, useRef } from "react";
 import s from "./LoveButton.module.scss";
 import HeartIcon from "./heart.svg?react";
+import clsx from "clsx";
 
 type Bubble = {
   id: number;
-  left: number; // в процентах
-  top: number; // в процентах
-  size: number; // в px
-  delay: number; // в секундах
+  left: number;
+  top: number;
+  size: number;
+  delay: number;
 };
 
-function LoveButton() {
-  const [pressed, setPressed] = useState(false);
-  const [shrunk, setShrunk] = useState(false);
+export default function LoveButton() {
   const [bubbles, setBubbles] = useState<Bubble[]>([]);
+  const [shrunk, setShrunk] = useState(false);
+  const [isShaking, setIsShaking] = useState(false);
+  const [animating, setAnimating] = useState(false);
 
-  const bubbleClearTimeoutRef = useRef<number | null>(null);
-  const shrinkTimeoutRef = useRef<number | null>(null);
-  const pressStartTimeRef = useRef<number>(0);
+  const pressStartTimeRef = useRef<number | null>(null);
+  const shakeTimerRef = useRef<number | null>(null);
+  const rampTimerRef = useRef<number | null>(null);
+  const bubbleTimerRef = useRef<number | null>(null);
 
-  const bubbleCount = 20;
+  const bubbleCount = 30;
   const delayStep = 0.05; // сек
-  const animationDuration = 0.8; // сек
-  const totalDuration = (bubbleCount - 1) * delayStep + animationDuration; // сек
+  const bubbleAnimDur = 0.8; // сек
+  const SHAKE_INTERVAL = 700; // мс
+  const RAMP_DURATION = 520; // мс
 
-  // При нажатии: устанавливаем состояние, генерим пузырьки и планируем их очистку
-  const handlePressStart = () => {
-    if (bubbleClearTimeoutRef.current) {
-      clearTimeout(bubbleClearTimeoutRef.current);
-    }
-    if (shrinkTimeoutRef.current) {
-      clearTimeout(shrinkTimeoutRef.current);
-    }
+  const clearTimers = () => {
+    [shakeTimerRef, rampTimerRef, bubbleTimerRef].forEach((ref) => {
+      if (ref.current) {
+        clearTimeout(ref.current);
+        ref.current = null;
+      }
+    });
+  };
 
-    pressStartTimeRef.current = Date.now();
-    setPressed(true);
-    setShrunk(true);
+  const generateBubbles = () => {
+    const now = Date.now();
+    const newB = Array.from({ length: bubbleCount }).map((_, i) => ({
+      id: now + i,
+      left: Math.random() * 100,
+      top: 40 + Math.random() * 20,
+      size: 40 + Math.random() * 40,
+      delay: i * delayStep,
+    }));
+    setBubbles(newB);
 
-    // Сначала очищаем старые пузырьки
-    setBubbles([]);
-
-    // Через микро-задачу добавляем новые
-    setTimeout(() => {
-      const timestamp = Date.now(); // для уникальности
-      const newBubbles: Bubble[] = Array.from({ length: bubbleCount }).map(
-        (_, i) => ({
-          id: timestamp + i, // уникальный id
-          left: Math.random() * 100,
-          top: 40 + Math.random() * 20,
-          size: 40 + Math.random() * 40,
-          delay: i * delayStep,
-        })
-      );
-      setBubbles(newBubbles);
-    }, 0);
-
-    bubbleClearTimeoutRef.current = window.setTimeout(() => {
+    const totalMs = ((bubbleCount - 1) * delayStep + bubbleAnimDur) * 1000;
+    bubbleTimerRef.current = window.setTimeout(() => {
       setBubbles([]);
-    }, totalDuration * 1000);
+      setAnimating(false);
+    }, totalMs);
   };
 
-  // При отпускании: сразу снимаем pressed, а shrunk сбрасываем лишь после окончания анимации
+  const endShakeAndRamp = () => {
+    setShrunk(false);
+    rampTimerRef.current = window.setTimeout(() => {
+      setIsShaking(false);
+      generateBubbles();
+    }, RAMP_DURATION);
+  };
+
+  const handlePressStart = () => {
+    // блокируем во время любых анимаций
+    if (animating || bubbles.length > 0) return;
+
+    clearTimers();
+    setBubbles([]);
+    setAnimating(true);
+    setShrunk(true);
+    setIsShaking(true);
+    pressStartTimeRef.current = Date.now();
+  };
+
   const handlePressEnd = () => {
-    setPressed(false);
-
-    const elapsedMs = Date.now() - pressStartTimeRef.current;
-    const remainingMs = totalDuration * 1000 - elapsedMs;
-
-    if (remainingMs > 0) {
-      shrinkTimeoutRef.current = window.setTimeout(() => {
-        setShrunk(false);
-      }, remainingMs);
-    } else {
-      setShrunk(false);
+    // игнорируем если не в активной анимации, или уже запланирован endShakeAndRamp
+    if (
+      !animating ||
+      !isShaking ||
+      pressStartTimeRef.current === null ||
+      shakeTimerRef.current !== null
+    ) {
+      return;
     }
+
+    const held = Date.now() - pressStartTimeRef.current;
+    const cycles = Math.ceil(held / SHAKE_INTERVAL) || 1;
+    const delayToRamp = cycles * SHAKE_INTERVAL - held;
+
+    shakeTimerRef.current = window.setTimeout(endShakeAndRamp, delayToRamp);
   };
 
-  // Чистим таймауты при размонтировании
   useEffect(() => {
-    return () => {
-      if (bubbleClearTimeoutRef.current)
-        clearTimeout(bubbleClearTimeoutRef.current);
-      if (shrinkTimeoutRef.current) clearTimeout(shrinkTimeoutRef.current);
-    };
+    return () => clearTimers();
   }, []);
+
+  const handleClick = () => {
+    console.log(123);
+  };
+  const onMouseDown = () => {
+    handlePressStart();
+    handleClick();
+  };
 
   return (
     <div className={s.wrapper}>
       <button
-        className={`${s.header_block} ${shrunk ? s.pressed : ""}`}
-        onMouseDown={handlePressStart}
+        className={clsx(
+          s.header_block,
+          shrunk && s.pressed,
+          isShaking && s.shake
+        )}
+        onMouseDown={onMouseDown}
         onMouseUp={handlePressEnd}
         onMouseLeave={handlePressEnd}
         onTouchStart={handlePressStart}
@@ -118,11 +142,9 @@ function LoveButton() {
             strokeWidth="4"
           />
         </svg>
-
-        <div className={s.heart}>
+        <div className={clsx(s.heart, animating && s.heartPaused)}>
           <HeartIcon />
         </div>
-
         {bubbles.length > 0 && (
           <div className={s.bubbles}>
             {bubbles.map((b) => (
@@ -144,5 +166,3 @@ function LoveButton() {
     </div>
   );
 }
-
-export default LoveButton;

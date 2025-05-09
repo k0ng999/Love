@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
+import AnimatedFlip from "./AnimatedFlip";
 import s from "./LoveTimeBlock.module.scss";
 
-function getWordForm(number: number, forms: [string, string, string]) {
-  const n = Math.abs(number) % 100;
-  const n1 = n % 10;
-
-  if (n > 10 && n < 20) return forms[2];
-  if (n1 > 1 && n1 < 5) return forms[1];
-  if (n1 === 1) return forms[0];
+function getWordForm(n: number, forms: [string, string, string]) {
+  const t = Math.abs(n) % 100;
+  const u = t % 10;
+  if (t > 10 && t < 20) return forms[2];
+  if (u > 1 && u < 5) return forms[1];
+  if (u === 1) return forms[0];
   return forms[2];
 }
 
-function LoveTimeBlock() {
-  const [timePassed, setTimePassed] = useState({
+export default function LoveTimeBlock() {
+  const [time, setTime] = useState({
     days: 0,
     hours: 0,
     minutes: 0,
@@ -20,49 +20,42 @@ function LoveTimeBlock() {
   });
 
   useEffect(() => {
-    const startDate = new Date("2025-03-15T00:00:00");
-
-    const updateTime = () => {
+    const start = new Date("2025-03-15T00:00:00");
+    const upd = () => {
       const now = new Date();
-      const diffMs = now.getTime() - startDate.getTime();
-
-      const totalSeconds = Math.floor(diffMs / 1000);
-      const days = Math.floor(totalSeconds / (3600 * 24));
-      const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
-
-      setTimePassed({ days, hours, minutes, seconds });
+      const diff = Math.floor((now.getTime() - start.getTime()) / 1000);
+      setTime({
+        days: Math.floor(diff / 86400),
+        hours: Math.floor((diff % 86400) / 3600),
+        minutes: Math.floor((diff % 3600) / 60),
+        seconds: diff % 60,
+      });
     };
-
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
+    upd();
+    const id = setInterval(upd, 1000);
+    return () => clearInterval(id);
   }, []);
+
+  const items: [number, [string, string, string]][] = [
+    [time.days, ["день", "дня", "дней"]],
+    [time.hours, ["час", "часа", "часов"]],
+    [time.minutes, ["минуту", "минуты", "минут"]],
+    [time.seconds, ["секунду", "секунды", "секунд"]],
+  ];
 
   return (
     <div className={s.header_block}>
       <div className={s.head_text}>Ты радуешь меня уже целых</div>
       <div className={s.time_block}>
-        <div>
-          {timePassed.days}{" "}
-          {getWordForm(timePassed.days, ["день", "дня", "дней"])}
-        </div>
-        <div>
-          {timePassed.hours}{" "}
-          {getWordForm(timePassed.hours, ["час", "часа", "часов"])}
-        </div>
-        <div>
-          {timePassed.minutes}{" "}
-          {getWordForm(timePassed.minutes, ["минута", "минуты", "минут"])}
-        </div>
-        <div>
-          {timePassed.seconds}{" "}
-          {getWordForm(timePassed.seconds, ["секунда", "секунды", "секунд"])}
-        </div>
+        {items.map(([num, forms], i) => {
+          const txt = `${num} ${getWordForm(num, forms)}`;
+          return (
+            <div key={i} className={s.item}>
+              <AnimatedFlip content={txt} />
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 }
-
-export default LoveTimeBlock;

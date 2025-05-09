@@ -3,7 +3,7 @@
 $strokeColor: #faeafa;
 $heartColor: $pink;
 $size: 40vw;
-$totalAnim: 7s;
+$totalAnim: 4s;
 $delay: 0.1s;
 $squareLen: 240;
 $circleLen: 188.522;
@@ -151,18 +151,22 @@ body {
   }
   54% {
     transform: rotate(-45deg);
+    scale: 1;
   }
   90% {
     transform: rotate(-45deg);
     opacity: 1;
+    scale: 1.5;
   }
   97% {
     transform: rotate(-45deg);
     opacity: 0;
+    scale: 1.5;
   }
   100% {
     transform: rotate(-45deg);
     opacity: 0;
+    scale: 1.5;
   }
 }
 

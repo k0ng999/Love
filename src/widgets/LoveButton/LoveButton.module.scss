@@ -1,91 +1,174 @@
+$animateConst: 0.7s;
+
 .wrapper {
   display: flex;
   justify-content: center;
   align-content: center;
   width: 100%;
   user-select: none;
-  -webkit-user-select: none; // для Safari
-  -webkit-tap-highlight-color: transparent; // убирает синий фон при нажатии на iOS
-  -webkit-touch-callout: none; // блокирует контекстное меню iOS
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
 }
 
 .header_block {
-  cursor: pointer;
+  cursor: pointer !important;
   width: 100%;
   max-width: r(500);
   margin-inline: r($spacing-md);
-  margin-top: r($spacing-xxxl);
+  margin-top: r($spacing-xxl);
   background-color: $pink;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: r($border-radius-md);
-  border: 8px solid $light;
+  border: 8px solid $dark;
   position: relative;
   overflow: hidden;
-  transition: transform $transform-s-sm ease-in-out,
-    box-shadow $transform-s-sm ease-in-out;
   transform: scale(1);
-  box-shadow: 0 r(8) r(20) rgba(0, 0, 0, 0.3); // обычное состояние
-  touch-action: manipulation;
-
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
+  transition: transform $animateConst ease-in-out,
+    box-shadow $animateConst ease-in-out, scale $animateConst ease-in-out;
+  box-shadow: 0 r(8) r(20) rgba(0, 0, 0, 0.3);
 
   &.pressed {
-    transform: scale(0.9);
-    box-shadow: 0 r(4) r(10) rgba(0, 0, 0, 0.1); // уменьшенная тень при нажатии
+    /* плавно уменьшаемся до 0.9 */
+    scale: 0.9;
+    /* мягкая тень при нажатом состоянии */
+    box-shadow: 0 r(4) r(10) rgba(0, 0, 0, 0.212);
   }
 
-  & .heart {
+  &.shake {
+    /* теперь тряска — только по X и поворот, без scale */
+    animation: shake-fast $animateConst infinite linear;
+    scale: 0.9;
+  }
+
+  .diagonals {
+    /* убрали любую анимацию */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: $dark;
+    pointer-events: none;
     z-index: 1;
-    & svg {
-      padding-top: r(25);
-      padding-bottom: r(25);
+  }
+
+  .heart {
+    z-index: 1;
+    scale: 1;
+
+    svg {
+      padding: r(25) 0;
       width: r(100);
       height: r(100);
+      fill: $light;
+      animation: heart-scale 3.25s ease-in-out infinite;
+      animation-play-state: running;
+      color: $pink-hover;
+    }
+
+    &.heartPaused svg {
+      animation-play-state: paused;
+    }
+  }
+
+  .bubbles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+
+    .bubble {
+      position: absolute;
+      background: radial-gradient(
+        circle at 30% 30%,
+        rgba($light, 0.9),
+        rgba($pink-hover, 0.2)
+      );
+      border-radius: 50%;
+      opacity: 0;
+      animation: bubble-up 0.8s ease-out forwards,
+        bubble-fade 1.2s ease-in 0.2s forwards;
     }
   }
 }
 
-.diagonals {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  color: $light; // будет использоваться как цвет линий
-  pointer-events: none;
-  z-index: 0; // позади сердечка
-}
+// === keyframes ===
 
-.bubbles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0; // позади сердечка, но над фоном
-}
+@keyframes shake-fast {
+  0% {
+    transform: translateX(0) rotate(0deg);
+  }
+  10% {
+    transform: translateX(6px) rotate(1.5deg);
+  }
+  25% {
+    transform: translateX(-6px) rotate(-1.5deg);
+  }
+  50% {
+    transform: translateX(6px) rotate(1deg);
+  }
+  75% {
+    transform: translateX(0) rotate(0deg);
+  }
 
-.bubble {
-  position: absolute;
-  background: rgba($light, 0.7);
-  border-radius: 50%;
-  opacity: 0;
-  animation: bubble-up 0.8s ease-out forwards;
+  90% {
+    transform: translateX(0) rotate(0deg);
+  }
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
 }
 
 @keyframes bubble-up {
   0% {
-    transform: translateY(0) scale(1);
+    transform: translateY(0) scale(0.8) rotate(0deg);
     opacity: 1;
   }
   100% {
-    transform: translateY(-120px) scale(0.5);
+    transform: translateY(-140px) scale(1.3) rotate(45deg);
     opacity: 0;
+  }
+}
+
+@keyframes bubble-fade {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Новая анимация: масштаб + удержание + плавный возврат */
+@keyframes heart-scale {
+  0% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1);
+  }
+  60% {
+    transform: scale(0.85);
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  80% {
+    transform: scale(1);
+  }
+  90% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
   }
 }

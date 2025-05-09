@@ -4,27 +4,55 @@
 
   & .head_text {
     color: $pink-hover;
-    font-size: r($font-size-xl);
+    font-size: r($font-size-xxl);
     font-weight: 800;
+    animation: headTextShake 3s ease-in-out infinite;
   }
 
   & .time_block {
     display: flex;
     flex-direction: column; // располагаем дни вертикально
-    margin-top: r($spacing-xl);
-    gap: r($spacing-xxl);
-    & div {
+    margin-top: r($spacing-xxl);
+    gap: r($spacing-lg);
+    & .item {
       font-size: r($spacing-xl);
       font-weight: 800;
-      width: 100%; // чтобы можно было выровнять содержимое внутри
-
-      &:nth-child(odd) {
-        text-align: left; // выравнивание влево
-      }
-
-      &:nth-child(even) {
-        text-align: right; // выравнивание вправо
-      }
     }
+  }
+}
+
+@keyframes headTextShake {
+  0% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(2deg);
+  }
+  20% {
+    transform: rotate(-2deg);
+  }
+  30% {
+    transform: rotate(3deg);
+  }
+  40% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+  60% {
+    transform: rotate(-2deg);
+  }
+  70% {
+    transform: rotate(1deg);
+  }
+  80% {
+    transform: rotate(-1deg);
+  }
+  90% {
+    transform: rotate(1deg);
+  }
+  100% {
+    transform: rotate(0deg);
   }
 }

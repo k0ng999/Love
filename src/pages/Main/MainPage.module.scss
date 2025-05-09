@@ -22,12 +22,12 @@
   top: 0;
   width: 100vw;
   height: 100vh;
-  animation: fadeOutLoader 1s 7s forwards;
+  animation: fadeOutLoader 1s 4s forwards;
 }
 .fadeIn {
   opacity: 1;
   visibility: visible;
-  animation: fadeIn 1s 8s forwards;
+  animation: fadeIn 1s 5s forwards;
 
   & .heartPulse {
     position: absolute;
