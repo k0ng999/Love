@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import s from "./LoveButton.module.scss";
 import HeartIcon from "./heart.svg?react";
 import clsx from "clsx";
+import axios, { AxiosError } from "axios";
 
 type Bubble = {
   id: number;
@@ -12,6 +13,8 @@ type Bubble = {
 };
 
 export default function LoveButton() {
+  const [error, setError] = useState<string | null>(null);
+
   const [bubbles, setBubbles] = useState<Bubble[]>([]);
   const [shrunk, setShrunk] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
@@ -98,15 +101,83 @@ export default function LoveButton() {
   }, []);
 
   const handleClick = () => {
-    console.log(123);
+    console.log(1);
   };
   const onMouseDown = () => {
     handlePressStart();
     handleClick();
   };
 
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [registration, setRegistration] =
+    useState<ServiceWorkerRegistration | null>(null);
+
+  // Регистрируем service worker один раз
+  useEffect(() => {
+    if ("serviceWorker" in navigator && "PushManager" in window) {
+      navigator.serviceWorker.register("/Love/sw.js").then((reg) => {
+        setRegistration(reg);
+      });
+    }
+  }, []);
+
+  const requestPermissionAndSubscribe = async () => {
+    if (!registration) return alert("Service Worker не зарегистрирован");
+
+    const permission = await Notification.requestPermission();
+    if (permission !== "granted") {
+      alert("Разрешение не получено");
+      return;
+    }
+
+    const publicKey = await axios.get("http://localhost:4000/vapidPublicKey");
+    const sub = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(publicKey.data),
+    });
+
+    await axios.post("http://localhost:4000/subscribe", sub);
+    setIsSubscribed(true);
+  };
+
+  const handlePush = async () => {
+    try {
+      const res = await axios.post("http://localhost:4000/sendNotification");
+      setError(res.data);
+    } catch (err: unknown) {
+      // Указываем, что ошибка может быть неизвестного типа
+      // Логируем ошибку в консоль для подробного вывода
+      console.error("Ошибка при отправке уведомления:", err);
+
+      // Проверяем, является ли ошибка экземпляром AxiosError
+      if (err instanceof AxiosError) {
+        const errorDetails = `
+        Сообщение: ${err.message}
+        Код ошибки: ${err.code}
+        Конфигурация запроса: ${JSON.stringify(err.config, null, 2)}
+        Ответ сервера: ${JSON.stringify(err.response, null, 2)}
+      `;
+        setError(errorDetails);
+      } else if (err instanceof Error) {
+        // Если ошибка является обычной ошибкой (не AxiosError)
+        setError(`Ошибка: ${err.message}`);
+      } else {
+        // Если ошибка имеет неизвестный тип
+        setError("Неизвестная ошибка");
+      }
+    }
+  };
+
   return (
     <div className={s.wrapper}>
+      <div>
+        <button onClick={requestPermissionAndSubscribe}>
+          Разрешить уведомления
+        </button>
+
+        <button onClick={handlePush}>Отправить уведомление</button>
+      </div>
+      {error && <div className={s.error}>{error}</div>}
       <button
         className={clsx(
           s.header_block,
@@ -165,4 +236,14 @@ export default function LoveButton() {
       </button>
     </div>
   );
+}
+
+// Утилита: перевод base64 в Uint8Array
+function urlBase64ToUint8Array(base64String: string) {
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, "+")
+    .replace(/_/g, "/");
+  const rawData = window.atob(base64);
+  return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)));
 }

@@ -25,8 +25,6 @@
   animation: fadeOutLoader 1s 4s forwards;
 }
 .fadeIn {
-  opacity: 1;
-  visibility: visible;
   animation: fadeIn 1s 5s forwards;
 
   & .heartPulse {

@@ -8,8 +8,8 @@ import LoveButton from "../../widgets/LoveButton/LoveButton";
 
 function MainPage() {
   const [firstClick, setFirstClick] = useState(false);
-  const [showHeart, setShowHeart] = useState(true);
-  const [showLoader, setShowLoader] = useState(true);
+  const [showHeart, setShowHeart] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
 
   // Скрытие FirstLoader через 7 секунд
   useEffect(() => {

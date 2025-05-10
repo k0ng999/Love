@@ -13,12 +13,18 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "axios": "^1.9.0",
+    "body-parser": "^2.2.0",
     "clsx": "^2.1.1",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
     "gh-pages": "^6.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "sass": "^1.87.0",
-    "vite-plugin-svgr": "^4.3.0"
+    "vite-plugin-pwa": "^1.0.0",
+    "vite-plugin-svgr": "^4.3.0",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
@@ -33,5 +39,9 @@
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.26.1",
     "vite": "^6.3.1"
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/k0ng999/Love.git",
+  "author": "k0ng999 <baydar_14@maul.ru>",
+  "license": "MIT"
 }
