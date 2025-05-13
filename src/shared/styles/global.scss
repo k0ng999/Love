@@ -6,9 +6,10 @@
   font-weight: 100 900;
   font-display: swap;
 }
-
+:root {
+  color-scheme: dark;
+}
 body {
-  color-scheme: light;
   background-color: var(--background);
   color: var(--text);
   margin: 0;

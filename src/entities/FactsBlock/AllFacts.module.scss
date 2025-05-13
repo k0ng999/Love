@@ -1,0 +1,39 @@
+.header_block {
+  margin-top: r($spacing-xxxl);
+  padding-inline: r($spacing-md);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  & div {
+    max-width: r(400);
+
+    margin-top: r($spacing-xxxl);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+
+    & span {
+      font-weight: $font-weight-medium;
+      font-size: r($font-size-lg);
+      line-height: lh($font-size-md);
+      color: $light;
+    }
+    & strong {
+      margin-top: r($spacing-xs);
+      font-weight: $font-weight-bold;
+      font-size: r($font-size-xl);
+      line-height: 32px;
+      color: $pink-hover;
+    }
+  }
+  & .footer {
+    font-size: r($font-size-xs);
+    color: $dark;
+    text-align: right;
+    width: 70%;
+    align-self: flex-end;
+  }
+}

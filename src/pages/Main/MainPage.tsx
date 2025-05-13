@@ -5,11 +5,12 @@ import { useEffect, useState } from "react";
 import clsx from "clsx";
 import LoveTimeBlock from "../../entities/LoveTimeBlock/LoveTimeBlock";
 import LoveButton from "../../widgets/LoveButton/LoveButton";
+import AllFacts from "../../entities/FactsBlock/AllFacts";
 
 function MainPage() {
   const [firstClick, setFirstClick] = useState(false);
-  const [showHeart, setShowHeart] = useState(false);
-  const [showLoader, setShowLoader] = useState(false);
+  const [showHeart, setShowHeart] = useState(true);
+  const [showLoader, setShowLoader] = useState(true);
 
   // Скрытие FirstLoader через 7 секунд
   useEffect(() => {
@@ -26,7 +27,7 @@ function MainPage() {
       const timeout = setTimeout(() => {
         setShowHeart(false);
         document.body.style.overflow = "auto";
-      }, 1200);
+      }, 800);
 
       return () => clearTimeout(timeout);
     }
@@ -50,6 +51,7 @@ function MainPage() {
         )}
         <LoveTimeBlock></LoveTimeBlock>
         <LoveButton></LoveButton>
+        <AllFacts></AllFacts>
       </div>
     </>
   );

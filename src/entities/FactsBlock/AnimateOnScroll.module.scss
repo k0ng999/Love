@@ -1,0 +1,19 @@
+.animateItem {
+  opacity: 0;
+  transform: translateX(0);
+  transition: transform 0.8s ease-out, opacity 0.8s ease-out;
+  will-change: transform, opacity;
+
+  &.left {
+    transform: translateX(-150px);
+  }
+
+  &.right {
+    transform: translateX(150px);
+  }
+
+  &.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

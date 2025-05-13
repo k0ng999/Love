@@ -5,6 +5,10 @@ $animateConst: 0.7s;
   justify-content: center;
   align-content: center;
   width: 100%;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
 }
 
 .header_block {
@@ -12,7 +16,7 @@ $animateConst: 0.7s;
   width: 100%;
   max-width: r(500);
   margin-inline: r($spacing-md);
-  margin-top: r($spacing-xxl);
+  margin-top: calc(r($spacing-xxl) * 4);
   background-color: $pink;
   display: flex;
   align-items: center;

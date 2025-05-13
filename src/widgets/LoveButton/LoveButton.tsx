@@ -67,6 +67,8 @@ export default function LoveButton() {
   };
 
   const handlePressStart = () => {
+    handlePush();
+
     // блокируем во время любых анимаций
     if (animating || bubbles.length > 0) return;
 
@@ -100,12 +102,8 @@ export default function LoveButton() {
     return () => clearTimers();
   }, []);
 
-  const handleClick = () => {
-    console.log(1);
-  };
   const onMouseDown = () => {
     handlePressStart();
-    handleClick();
   };
 
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -130,26 +128,48 @@ export default function LoveButton() {
       return;
     }
 
-    const publicKey = await axios.get("http://localhost:4000/vapidPublicKey");
+    const publicKey = await axios.get(
+      "https://loveback.onrender.com/vapidPublicKey"
+    );
     const sub = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(publicKey.data),
     });
 
-    await axios.post("http://localhost:4000/subscribe", sub);
+    await axios.post("https://loveback.onrender.com/subscribe", sub);
     setIsSubscribed(true);
   };
-
   const handlePush = async () => {
     try {
-      const res = await axios.post("http://localhost:4000/sendNotification");
-      setError(res.data);
+      if (!registration) return alert("Service Worker не зарегистрирован");
+      const sub = await registration.pushManager.getSubscription();
+      if (!sub) {
+        alert("Вы не подписаны на уведомления");
+        return;
+      }
+
+      const res = await axios.post(
+        "https://loveback.onrender.com/sendNotification",
+        {
+          senderSubscription: sub,
+        }
+      );
+
+      // Проверяем, что пришло от сервера
+      console.log("Response:", res.data); // Логируем ответ с сервера
+
+      if (res.data.error) {
+        // Если есть ошибка, показываем её
+        setError(`Ошибка: ${res.data.error}`);
+      } else if (res.data.success) {
+        // Если успех, показываем успех
+        setError(`Успех: ${res.data.success}`);
+      } else {
+        setError("Неизвестный ответ от сервера");
+      }
     } catch (err: unknown) {
-      // Указываем, что ошибка может быть неизвестного типа
-      // Логируем ошибку в консоль для подробного вывода
       console.error("Ошибка при отправке уведомления:", err);
 
-      // Проверяем, является ли ошибка экземпляром AxiosError
       if (err instanceof AxiosError) {
         const errorDetails = `
         Сообщение: ${err.message}
@@ -159,10 +179,8 @@ export default function LoveButton() {
       `;
         setError(errorDetails);
       } else if (err instanceof Error) {
-        // Если ошибка является обычной ошибкой (не AxiosError)
         setError(`Ошибка: ${err.message}`);
       } else {
-        // Если ошибка имеет неизвестный тип
         setError("Неизвестная ошибка");
       }
     }
@@ -170,14 +188,10 @@ export default function LoveButton() {
 
   return (
     <div className={s.wrapper}>
-      <div>
-        <button onClick={requestPermissionAndSubscribe}>
+      {/* <button onClick={requestPermissionAndSubscribe}>
           Разрешить уведомления
-        </button>
+        </button> */}
 
-        <button onClick={handlePush}>Отправить уведомление</button>
-      </div>
-      {error && <div className={s.error}>{error}</div>}
       <button
         className={clsx(
           s.header_block,
