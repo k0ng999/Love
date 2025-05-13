@@ -5,7 +5,6 @@
   "display": "standalone",
   "background_color": "#fcb2c6",
   "theme_color": "#fcb2c6",
-  "orientation": "portrait",
   "icons": [
     {
       "src": "/Love/logo.png",
