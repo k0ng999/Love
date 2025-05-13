@@ -3,8 +3,8 @@
   "short_name": "Love",
   "start_url": "/Love/",
   "display": "standalone",
-  "background_color": "#fcb2c6",
-  "theme_color": "#fcb2c6",
+  "background_color": "#ffd8e3",
+  "theme_color": "#ffd8e3",
   "icons": [
     {
       "src": "/Love/1024_love_dark.png",
