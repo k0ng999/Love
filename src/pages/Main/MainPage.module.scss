@@ -56,11 +56,10 @@
     &::after {
       content: "";
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: var(--background-block);
+      top: calc(r($spacing-xl) * -1);
+      left: -(r($spacing-md)); // способ 2: тоже безопасный
+      width: calc(100% + r($spacing-md) * 2);
+      height: calc(100% + r($spacing-xl) * 2);
       background-repeat: repeat;
       background-position: 0 0;
       background-size: auto;
@@ -68,18 +67,18 @@
       will-change: background-position, opacity;
       transform: translateZ(0);
       z-index: -1;
-
+      opacity: 1;
       animation: fadeInHeart 6s ease-out infinite,
         bgScroll 10s ease-in-out infinite;
     }
 
     // Специфично для каждой картинки
     &::after {
-      background-image: url("Love/www.png");
+      background-image: url("Love/backHeart.png");
     }
 
     &::before {
-      background-image: url("www.png");
+      background-image: url("backHeart.png");
     }
   }
 }
@@ -105,13 +104,13 @@
     opacity: 0;
   }
   25% {
-    opacity: 0.07;
+    opacity: 0.08;
   }
   50% {
     opacity: 0.1;
   }
   75% {
-    opacity: 0.07;
+    opacity: 0.08;
   }
   100% {
     opacity: 0;

@@ -11,8 +11,8 @@ import AnimateOnScroll from "../../entities/FactsBlock/AnimateOnScroll";
 import { PhotoBlock } from "../../entities/PhotoBlock/PhotoBlock";
 function MainPage() {
   const [firstClick, setFirstClick] = useState(false);
-  const [showHeart, setShowHeart] = useState(false);
-  const [showLoader, setShowLoader] = useState(false);
+  const [showHeart, setShowHeart] = useState(true);
+  const [showLoader, setShowLoader] = useState(true);
 
   // Скрытие FirstLoader через 7 секунд
   useEffect(() => {
