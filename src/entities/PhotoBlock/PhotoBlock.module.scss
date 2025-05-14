@@ -1,0 +1,74 @@
+.header_block {
+  & .title {
+    text-align: center;
+    font-weight: 800;
+    color: $pink-hover;
+    font-size: r($font-size-xxl);
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+
+  & .photoBlock {
+    margin-top: r($spacing-xl);
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+
+    // ⬇️ Маска-тень слева и справа поверх фотографий
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 20px;
+      z-index: 1;
+      pointer-events: none; // чтобы не мешали drag-событиям
+    }
+
+    &::before {
+      left: 0;
+      background: linear-gradient(
+        to right,
+        var(--background-block),
+        transparent
+      );
+    }
+
+    &::after {
+      right: 0;
+      background: linear-gradient(
+        to left,
+        var(--background-block),
+        transparent
+      );
+    }
+
+    & .photoStrip {
+      display: inline-flex;
+      gap: 10px;
+      width: fit-content;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+      will-change: transform;
+      transform: translateZ(0);
+      position: relative;
+      z-index: 0; // гарантируем, что фотографии будут под тенями
+    }
+
+    & .photo {
+      border-radius: 12px;
+      border: 1px solid $light;
+      width: 30vh;
+      height: 35vh;
+      object-fit: cover;
+      flex-shrink: 0;
+      pointer-events: none;
+      backface-visibility: hidden;
+    }
+  }
+}

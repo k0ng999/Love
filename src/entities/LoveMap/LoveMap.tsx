@@ -118,7 +118,6 @@ const LoveMap = () => {
               handleClick(place.coords);
               handlePlaceClick(); // Скролл к карте
             }}
-            style={{ cursor: "pointer" }}
           >
             <div className={s.nums}>
               <div className={s.padding_block}>

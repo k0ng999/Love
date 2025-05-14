@@ -20,6 +20,10 @@ body {
   font-size: r(16);
   font-family: "InterVariable", -apple-system, system-ui, "Segoe UI",
     "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  cursor: url("Love/cursor.png"), auto !important;
+}
+*:hover {
+  cursor: url("Love/cursor.png"), auto !important;
 }
 // body::before {
 //   content: "";

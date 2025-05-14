@@ -30,7 +30,6 @@
 
   & .heartPulse {
     position: absolute;
-    cursor: pointer;
     z-index: 9999;
     top: 0;
   }
@@ -46,4 +45,75 @@
   margin-bottom: calc(r($spacing-xxxl) * 2);
   margin-top: r($spacing-xl);
   box-shadow: 0 r(0) r(20) #fcb2c6;
+  position: relative;
+  overflow: hidden;
+
+  & .backHeart {
+    position: relative;
+    z-index: 0;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--background-block);
+      background-repeat: repeat;
+      background-position: 0 0;
+      background-size: auto;
+      background-blend-mode: multiply;
+      will-change: background-position, opacity;
+      transform: translateZ(0);
+      z-index: -1;
+
+      animation: fadeInHeart 6s ease-out infinite,
+        bgScroll 10s ease-in-out infinite;
+    }
+
+    // Специфично для каждой картинки
+    &::after {
+      background-image: url("Love/www.png");
+    }
+
+    &::before {
+      background-image: url("www.png");
+    }
+  }
+}
+@keyframes bgScroll {
+  0% {
+    background-position: 0 0;
+  }
+  25% {
+    background-position: 20px 10px;
+  }
+  50% {
+    background-position: -15px 25px;
+  }
+  75% {
+    background-position: 30px -20px;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+@keyframes fadeInHeart {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.07;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  75% {
+    opacity: 0.07;
+  }
+  100% {
+    opacity: 0;
+  }
 }

@@ -8,7 +8,7 @@ import LoveButton from "../../widgets/LoveButton/LoveButton";
 import AllFacts from "../../entities/FactsBlock/AllFacts";
 import LoveMap from "../../entities/LoveMap/LoveMap";
 import AnimateOnScroll from "../../entities/FactsBlock/AnimateOnScroll";
-
+import { PhotoBlock } from "../../entities/PhotoBlock/PhotoBlock";
 function MainPage() {
   const [firstClick, setFirstClick] = useState(false);
   const [showHeart, setShowHeart] = useState(false);
@@ -54,17 +54,27 @@ function MainPage() {
           </div>
         )}
         <div className={s.background_block}>
-          <LoveTimeBlock></LoveTimeBlock>
-          <LoveButton></LoveButton>
+          <div className={s.backHeart}>
+            <LoveTimeBlock></LoveTimeBlock>
+            <LoveButton></LoveButton>
+          </div>
         </div>
+
         <AnimateOnScroll key={"allFacts"} from="bottom" threshold={0.01}>
           <div className={s.background_block}>
             <AllFacts></AllFacts>
           </div>
         </AnimateOnScroll>
+
         <AnimateOnScroll key={"map"} from="bottom" threshold={0.01}>
           <div className={s.background_block}>
             <LoveMap />
+          </div>
+        </AnimateOnScroll>
+
+        <AnimateOnScroll key={"photo"} from="bottom" threshold={0.01}>
+          <div className={s.background_block}>
+            <PhotoBlock></PhotoBlock>
           </div>
         </AnimateOnScroll>
       </div>
