@@ -67,7 +67,10 @@ export default function LoveButton() {
   };
 
   const handlePressStart = () => {
-    handlePush();
+    if ("ontouchstart" in window || navigator.maxTouchPoints > 0) {
+    } else {
+      handlePush();
+    }
 
     // блокируем во время любых анимаций
     if (animating || bubbles.length > 0) return;
@@ -102,10 +105,10 @@ export default function LoveButton() {
     return () => clearTimers();
   }, []);
 
-  const onMouseDown = () => {
+  const hadndleSendNotification = () => {
     handlePressStart();
+    handlePush();
   };
-
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [registration, setRegistration] =
     useState<ServiceWorkerRegistration | null>(null);
@@ -128,25 +131,21 @@ export default function LoveButton() {
       return;
     }
 
-    const publicKey = await axios.get(
-      "https://loveback.onrender.com/vapidPublicKey"
-    );
-    const sub = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(publicKey.data),
-    });
+    // const publicKey =
+    //   "BLJwDpwOACqIj4pn9vkzHE9wyrSvR64EzbzCdjK5G4GKRzMXv9d_Fr2qzdSuwtXxVI35-ZPlIPJDxlYZoz00fr4";
+    // const sub = await registration.pushManager.subscribe({
+    //   userVisibleOnly: true,
+    //   applicationServerKey: urlBase64ToUint8Array(publicKey),
+    // });
 
-    await axios.post("https://loveback.onrender.com/subscribe", sub);
+    // await axios.post("https://loveback.onrender.com/subscribe", sub);
     setIsSubscribed(true);
   };
   const handlePush = async () => {
     try {
+      requestPermissionAndSubscribe();
       if (!registration) return alert("Service Worker не зарегистрирован");
       const sub = await registration.pushManager.getSubscription();
-      if (!sub) {
-        alert("Вы не подписаны на уведомления");
-        return;
-      }
 
       const res = await axios.post(
         "https://loveback.onrender.com/sendNotification",
@@ -189,8 +188,8 @@ export default function LoveButton() {
   return (
     <div className={s.wrapper}>
       {/* <button onClick={requestPermissionAndSubscribe}>
-          Разрешить уведомления
-        </button> */}
+        Разрешить уведомления
+      </button> */}
 
       <button
         className={clsx(
@@ -198,10 +197,10 @@ export default function LoveButton() {
           shrunk && s.pressed,
           isShaking && s.shake
         )}
-        onMouseDown={onMouseDown}
+        onMouseDown={handlePressStart}
         onMouseUp={handlePressEnd}
         onMouseLeave={handlePressEnd}
-        onTouchStart={handlePressStart}
+        onTouchStart={hadndleSendNotification}
         onTouchEnd={handlePressEnd}
       >
         <svg

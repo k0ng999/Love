@@ -1,19 +1,21 @@
 .header_block {
-  margin-top: r($spacing-xxxl);
-  padding-inline: r($spacing-md);
   display: flex;
   align-items: center;
   flex-direction: column;
 
   & div {
-    max-width: r(400);
-
+    max-width: r(450);
     margin-top: r($spacing-xxxl);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     text-align: center;
+
+    // Убираем отступ у первого div
+    &:first-of-type {
+      margin-top: 0;
+    }
 
     & span {
       font-weight: $font-weight-medium;
@@ -25,7 +27,6 @@
       margin-top: r($spacing-xs);
       font-weight: $font-weight-bold;
       font-size: r($font-size-xl);
-      line-height: 32px;
       color: $pink-hover;
     }
   }
@@ -35,5 +36,6 @@
     text-align: right;
     width: 70%;
     align-self: flex-end;
+    margin-top: 0px;
   }
 }

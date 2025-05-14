@@ -16,7 +16,7 @@
   }
 }
 .loader {
-  background-color: #000;
+  background-color: var(--background);
   position: absolute;
   z-index: 9999;
   top: 0;
@@ -25,6 +25,7 @@
   animation: fadeOutLoader 1s 4s forwards;
 }
 .fadeIn {
+  overflow: hidden;
   animation: fadeIn 1s 5s forwards;
 
   & .heartPulse {
@@ -36,4 +37,13 @@
   & .heartPulseClose {
     animation: fadeOut 1s 0.2s forwards;
   }
+}
+.background_block {
+  background-color: var(--background-block);
+  border-radius: r($border-radius-lg);
+  padding: r($spacing-xl);
+  padding-inline: r($spacing-md);
+  margin-bottom: calc(r($spacing-xxxl) * 2);
+  margin-top: r($spacing-xl);
+  box-shadow: 0 r(0) r(20) #fcb2c6;
 }

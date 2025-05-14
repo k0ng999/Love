@@ -6,11 +6,13 @@ import clsx from "clsx";
 import LoveTimeBlock from "../../entities/LoveTimeBlock/LoveTimeBlock";
 import LoveButton from "../../widgets/LoveButton/LoveButton";
 import AllFacts from "../../entities/FactsBlock/AllFacts";
+import LoveMap from "../../entities/LoveMap/LoveMap";
+import AnimateOnScroll from "../../entities/FactsBlock/AnimateOnScroll";
 
 function MainPage() {
   const [firstClick, setFirstClick] = useState(false);
-  const [showHeart, setShowHeart] = useState(true);
-  const [showLoader, setShowLoader] = useState(true);
+  const [showHeart, setShowHeart] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
 
   // Скрытие FirstLoader через 7 секунд
   useEffect(() => {
@@ -23,6 +25,8 @@ function MainPage() {
 
   // Скрытие HeartPulse через 1 секунду после клика
   useEffect(() => {
+    document.body.style.overflow = "auto";
+
     if (firstClick) {
       const timeout = setTimeout(() => {
         setShowHeart(false);
@@ -49,9 +53,20 @@ function MainPage() {
             <HeartPulse />
           </div>
         )}
-        <LoveTimeBlock></LoveTimeBlock>
-        <LoveButton></LoveButton>
-        <AllFacts></AllFacts>
+        <div className={s.background_block}>
+          <LoveTimeBlock></LoveTimeBlock>
+          <LoveButton></LoveButton>
+        </div>
+        <AnimateOnScroll key={"allFacts"} from="bottom" threshold={0.01}>
+          <div className={s.background_block}>
+            <AllFacts></AllFacts>
+          </div>
+        </AnimateOnScroll>
+        <AnimateOnScroll key={"map"} from="bottom" threshold={0.01}>
+          <div className={s.background_block}>
+            <LoveMap />
+          </div>
+        </AnimateOnScroll>
       </div>
     </>
   );

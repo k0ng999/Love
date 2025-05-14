@@ -1,0 +1,97 @@
+.head_text {
+  text-align: center;
+  color: $pink-hover;
+  font-size: r($font-size-xl);
+  font-weight: 800;
+}
+.wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: r($spacing-xl);
+}
+
+.header_map_block {
+  border-radius: r($border-radius-md);
+  overflow: hidden;
+  width: 100%;
+  height: 50vh;
+  border: r(1) solid $light;
+  z-index: 2;
+}
+.place_list {
+  margin: 0;
+  padding-inline: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  box-shadow: 0 r(8) r(20) rgba(0, 0, 0, 0.3);
+  border-bottom-left-radius: r($border-radius-md);
+  border-bottom-right-radius: r($border-radius-md);
+  position: relative;
+  &::after {
+    content: "";
+    width: calc(100% - 2px);
+    height: r(20);
+    background-color: var(--background-block);
+    border-left: r(1) solid $light;
+    border-right: r(1) solid $light;
+    position: absolute;
+    bottom: 100%;
+    left: 0px;
+  }
+
+  & li {
+    cursor: pointer;
+    list-style: none;
+    padding: 0;
+    line-height: 2rem;
+    -top: 10px;
+    font-size: r($font-size-lg);
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    border-left: r(1) solid $light;
+    border-right: r(1) solid $light;
+    position: relative;
+    &:last-child {
+      border-bottom: r(1) solid $light; /* добавляем border-bottom для последнего элемента */
+      border-bottom-left-radius: r($border-radius-md);
+      border-bottom-right-radius: r($border-radius-md);
+      & .last {
+        height: 0.5rem;
+      }
+    }
+
+    // &::before {
+    //   content: "";
+    //   width: r(1);
+    //   height: r(15);
+    //   background-color: $light;
+    //   position: absolute;
+    //   bottom: 100%;
+    //   right: -1px;
+    // }
+
+    & .padding_block {
+      & div {
+        height: 0.5rem;
+      }
+    }
+    & .nums {
+      font-style: monospace;
+      min-width: 3ch;
+      height: 100%;
+      display: inline-block;
+      text-align: right;
+      color: $pink-hover;
+      padding-inline: 0.5rem;
+    }
+    & .text {
+      padding-left: 0.5em;
+      border-left: r(1) solid #fff;
+    }
+  }
+}

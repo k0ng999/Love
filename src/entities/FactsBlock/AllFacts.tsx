@@ -19,14 +19,18 @@ const AllFacts = () => {
     <CoffeeFact key="coffee" />,
     <BirthsFact key="births" />,
     <div className={s.footer}>
-      Все цифры официальные и подтверждены администрацией Америки
+      Все цифры официальные и подтверждены лично АБАМАЙ R R
     </div>,
   ];
 
   return (
     <div className={s.header_block}>
       {facts.map((fact, index) => (
-        <AnimateOnScroll key={index} from={index % 2 === 0 ? "left" : "right"}>
+        <AnimateOnScroll
+          key={index}
+          from={index % 2 === 0 ? "left" : "right"}
+          threshold={0.6}
+        >
           {fact}
         </AnimateOnScroll>
       ))}

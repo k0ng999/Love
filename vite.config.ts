@@ -14,6 +14,9 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    allowedHosts: ["3c3b-212-34-140-176.ngrok-free.app"],
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),

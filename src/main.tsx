@@ -4,11 +4,7 @@ import "./shared/styles/global.scss";
 import App from "./app/App.tsx";
 
 const Root = () => {
-  return (
-    <StrictMode>
-      <App />
-    </StrictMode>
-  );
+  return <App />;
 };
 
 createRoot(document.getElementById("root")!).render(<Root />);
