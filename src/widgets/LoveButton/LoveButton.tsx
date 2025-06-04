@@ -109,7 +109,6 @@ export default function LoveButton() {
     handlePressStart();
     handlePush();
   };
-  const [isSubscribed, setIsSubscribed] = useState(false);
   const [registration, setRegistration] =
     useState<ServiceWorkerRegistration | null>(null);
 
@@ -123,49 +122,47 @@ export default function LoveButton() {
   }, []);
 
   const requestPermissionAndSubscribe = async () => {
-    if (!registration) return alert("Service Worker не зарегистрирован");
+    if (!registration) return;
 
     const permission = await Notification.requestPermission();
     if (permission !== "granted") {
-      alert("Разрешение не получено");
       return;
     }
 
-    // const publicKey =
-    //   "BLJwDpwOACqIj4pn9vkzHE9wyrSvR64EzbzCdjK5G4GKRzMXv9d_Fr2qzdSuwtXxVI35-ZPlIPJDxlYZoz00fr4";
-    // const sub = await registration.pushManager.subscribe({
-    //   userVisibleOnly: true,
-    //   applicationServerKey: urlBase64ToUint8Array(publicKey),
-    // });
+    const publicKey =
+      "BLJwDpwOACqIj4pn9vkzHE9wyrSvR64EzbzCdjK5G4GKRzMXv9d_Fr2qzdSuwtXxVI35-ZPlIPJDxlYZoz00fr4";
+    const sub = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(publicKey),
+    });
 
-    // await axios.post("https://loveback.onrender.com/subscribe", sub);
-    setIsSubscribed(true);
+    await axios.post("https://loveback-ebah.onrender.com/subscribe", sub);
   };
   const handlePush = async () => {
     try {
+      if (!registration) return;
       requestPermissionAndSubscribe();
-      if (!registration) return alert("Service Worker не зарегистрирован");
       const sub = await registration.pushManager.getSubscription();
 
       const res = await axios.post(
-        "https://loveback.onrender.com/sendNotification",
+        "https://loveback-ebah.onrender.com/sendNotification",
         {
           senderSubscription: sub,
         }
       );
 
       // Проверяем, что пришло от сервера
-      console.log("Response:", res.data); // Логируем ответ с сервера
+      // console.log("Response:", res.data); // Логируем ответ с сервера
 
-      if (res.data.error) {
-        // Если есть ошибка, показываем её
-        setError(`Ошибка: ${res.data.error}`);
-      } else if (res.data.success) {
-        // Если успех, показываем успех
-        setError(`Успех: ${res.data.success}`);
-      } else {
-        setError("Неизвестный ответ от сервера");
-      }
+      // if (res.data.error) {
+      //   // Если есть ошибка, показываем её
+      //   setError(`Ошибка: ${res.data.error}`);
+      // } else if (res.data.success) {
+      //   // Если успех, показываем успех
+      //   setError(`Успех: ${res.data.success}`);
+      // } else {
+      //   setError("Неизвестный ответ от сервера");
+      // }
     } catch (err: unknown) {
       console.error("Ошибка при отправке уведомления:", err);
 

@@ -15,12 +15,12 @@ const ChipsFact = () => {
   }, []);
 
   const seconds = elapsedMs / 1000;
-  const chips = Math.floor(seconds / 0.07);
+  const chips = Math.floor(seconds * 40000); // 40 000 чипсинок в секунду
 
   return (
     <div>
       <span>За это время на конвейерах Lay’s было произведено примерно </span>
-      <strong>{chips.toLocaleString()} ебаных чипсинок</strong>
+      <strong>{chips.toLocaleString()} штук чипсав</strong>
     </div>
   );
 };

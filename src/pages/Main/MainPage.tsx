@@ -13,6 +13,13 @@ function MainPage() {
   const [firstClick, setFirstClick] = useState(false);
   const [showHeart, setShowHeart] = useState(true);
   const [showLoader, setShowLoader] = useState(true);
+  const [showLoaderClose, setShowLoaderClose] = useState(false);
+
+  useEffect(() => {
+    if (showLoaderClose) {
+      setTimeout(() => setShowLoader(false), 400);
+    }
+  }, [showLoaderClose]);
 
   // Скрытие FirstLoader через 7 секунд
   useEffect(() => {
@@ -25,8 +32,6 @@ function MainPage() {
 
   // Скрытие HeartPulse через 1 секунду после клика
   useEffect(() => {
-    document.body.style.overflow = "auto";
-
     if (firstClick) {
       const timeout = setTimeout(() => {
         setShowHeart(false);
@@ -40,7 +45,10 @@ function MainPage() {
   return (
     <>
       {showLoader && (
-        <div className={s.loader}>
+        <div
+          className={clsx(s.loader, showLoaderClose && s.loader_close)}
+          onClick={() => setShowLoaderClose(true)}
+        >
           <FirstLoader />
         </div>
       )}

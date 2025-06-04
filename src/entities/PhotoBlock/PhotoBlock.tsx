@@ -3,6 +3,15 @@ import React, { useRef, useEffect } from "react";
 import { images } from "../../assets/images";
 import s from "./PhotoBlock.module.scss";
 
+function shuffle<T>(array: T[]): T[] {
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
 export const PhotoBlock: React.FC = () => {
   const stripRef = useRef<HTMLDivElement | null>(null);
   const widthRef = useRef<number>(0);
@@ -13,14 +22,16 @@ export const PhotoBlock: React.FC = () => {
   const animationRef = useRef<number>(0);
   const speed = 80; // px/sec
 
-  // Измерить ширину и запустить анимацию
+  // Перемешиваем только один раз при монтировании
+  const shuffledImagesRef = useRef<string[]>(shuffle(images));
+
   useEffect(() => {
     const strip = stripRef.current;
     if (!strip) return;
 
     // Очистка и дублирование изображений
     strip.innerHTML = "";
-    const dup = [...images, ...images];
+    const dup = [...shuffledImagesRef.current, ...shuffledImagesRef.current];
     dup.forEach((src, i) => {
       const img = document.createElement("img");
       img.src = src;
@@ -63,7 +74,6 @@ export const PhotoBlock: React.FC = () => {
     };
   }, []);
 
-  // Drag события
   useEffect(() => {
     const strip = stripRef.current;
     if (!strip) return;
@@ -107,7 +117,6 @@ export const PhotoBlock: React.FC = () => {
   return (
     <div className={s.header_block}>
       <div className={s.title}>А это типо мы</div>
-
       <div className={s.photoBlock}>
         <div ref={stripRef} className={s.photoStrip} />
       </div>
