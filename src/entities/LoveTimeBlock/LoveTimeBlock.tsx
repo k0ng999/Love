@@ -20,7 +20,7 @@ export default function LoveTimeBlock() {
   });
 
   useEffect(() => {
-    const start = new Date("2025-03-15T00:00:00");
+    const start = new Date("2025-02-31T00:00:00");
     const upd = () => {
       const now = new Date();
       const diff = Math.floor((now.getTime() - start.getTime()) / 1000);

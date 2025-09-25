@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import {  useRef, useState } from "react";
 import { YMaps, Map, Placemark } from "react-yandex-maps";
 import s from "./LoveMap.module.scss";
 
@@ -9,13 +9,19 @@ type Place = {
 };
 
 const LoveMap = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapRef = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [ymapsInstance, setYmapsInstance] = useState<any>(null);
 
   const places: Place[] = [
     {
       coords: [44.950777, 34.099251],
       name: "ЦЕНТАР (мусорка для отходников)",
+    },
+    {
+      coords: [44.950106, 34.096167],
+      name: "ЦЕНТАР (кинотеатр прощаний)",
     },
     {
       coords: [44.967127, 34.092815],
@@ -65,6 +71,11 @@ const LoveMap = () => {
       coords: [44.672521, 34.414999],
       name: "Старик усатыч (Турция)",
     },
+    {
+      coords: [44.839911, 34.322471],
+      name: "Красива лес(Перевальное)",
+    },
+
   ];
 
   const handleClick = (coords: [number, number]) => {
